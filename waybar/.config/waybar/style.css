@@ -1,0 +1,91 @@
+@import url("mocha.css");
+
+* {
+    font-family: 'Radio Canada Big', sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 50px;
+}
+
+window#waybar {
+    background-color: transparent;
+    color: @crust;
+}
+
+#workspaces button.active {
+    background-color: @sapphire;
+    color: @crust;
+    min-width: 50px;
+}
+
+#workspaces {
+    background-color: @crust;
+    margin-left: 6px;
+}
+
+.modules-left {
+    margin-left: 12px;    
+}
+
+.modules-right {
+    margin-right: 12px;    
+}
+
+#pulseaudio {
+    color: @text; /* color5 */
+    background-color: @crust; /* background */
+    margin: 0 15px 0 0px;
+    padding: 0 15px 0 15px; /* top, right, bottom, left */
+}
+
+#hyprworkspaces {
+    color: @text;
+    background-color: @crust;
+    margin: 0 0 0 0;
+    padding: 0 15px 0 15px;
+}
+
+#apps {
+    color: @text;
+    background-color: @crust;
+    margin: 0 0 0 0;
+    padding: 0 15px 0 15px;    
+}
+
+#custom-appmenu{
+    margin-right: 5px;
+}
+
+#tray {
+    margin-left: 10px;
+}
+
+#network {
+    color: @text; /* color2 */
+    background-color: @crust; /* background */
+    margin: 0 0px 0 0px;
+    padding: 0 15px 0 15px; /* top, right, bottom, left */
+}
+
+#clock {
+    color: @text; /* color3 */
+    background-color: @crust; /* background */
+    margin: 0 0 0 15px;
+    padding: 0 15px 0 15px; /* top, right, bottom, left */
+}
+
+#powernotify {
+    background-color: @crust; /* background */
+    margin: 0 0 0 15px;
+    padding: 0 15px 0 15px; /* top, right, bottom, left */   
+}
+
+#custom-powermenu {
+    color: @red; /* color3 */
+    margin: 0 5px 0 10px;
+}
+
+#custom-swaync {
+    color: @text; /* color3 */
+    margin: 0 10px 0 5px;
+}
