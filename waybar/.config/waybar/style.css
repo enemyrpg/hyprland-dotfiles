@@ -1,26 +1,95 @@
 @import url("mocha.css");
 
 * {
+    border: none;
+    border-radius: 50px;
     font-family: 'Radio Canada Big', sans-serif;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 12px;
+    min-height: 0;
+}
+
+window#waybar{
+    background: transparent;
+    padding-left: 15px;
+    padding-right: 15px;
     border-radius: 50px;
-}
-
-window#waybar {
-    background-color: transparent;
-    color: @crust;
-}
-
-#workspaces button.active {
-    background-color: @sapphire;
-    color: @crust;
-    min-width: 50px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-weight: normal;
+    font-style: normal;
 }
 
 #workspaces {
-    background-color: @crust;
-    margin-left: 6px;
+    background: @crust;
+    margin: 0px 0px;
+    padding: 8px 5px;
+    border-radius: 50px;
+    color: @crust;
+}
+
+#workspaces button {
+    font-weight: bold;
+    padding: 0px 5px;
+    margin: 0px 3px;
+    border-radius: 16px;
+    color: transparent;
+    background: @base;
+    transition: all 0.3s ease-in-out;
+}
+
+#workspaces button:not(.empty):not(.active):not(.visible):not(.special) {
+    font-weight: bold;
+    padding: 0px 5px;
+    margin: 0px 3px;
+    border-radius: 16px;
+    color: transparent;
+    background: @surface1;
+    transition: all 0.3s ease-in-out;     
+}
+
+#workspaces button:not(.empty):not(.active):not(.visible):not(.special):hover {
+    color: @text;
+    background: @surface0;
+}
+
+#workspaces button.visible {
+    font-weight: bold;
+    padding: 0px 5px;
+    margin: 0px 3px;
+    min-width: 60px;
+    border-radius: 16px;
+    color: @mantle;
+    background: @overlay0;
+    transition: all 0.3s ease-in-out;    
+}
+
+#workspaces button.active {
+    font-weight: bold;
+    background-color: @sapphire;
+    color: @mantle;
+    border-radius: 16px;
+    min-width: 60px;
+    background-size: 400% 400%;
+    transition: all 0.3s ease-in-out;
+}
+
+#workspaces button.urgent {
+    font-weight: bold;
+    background-color: @red;
+    color: @text;
+    border-radius: 16px;
+    background-size: 400% 400%;
+    transition: all 0.3s ease-in-out;
+}
+
+#workspaces button:hover {
+    font-weight: bold;
+    background-color: @surface0;
+    color: @text;
+    border-radius: 16px;
+    min-width: 60px;
+    background-size: 400% 400%;
 }
 
 .modules-left {
@@ -31,22 +100,25 @@ window#waybar {
     margin-right: 12px;    
 }
 
-#pulseaudio {
-    color: @text; /* color5 */
-    background-color: @crust; /* background */
-    margin: 0 15px 0 0px;
-    padding: 0 15px 0 15px; /* top, right, bottom, left */
-}
-
-#hyprworkspaces {
-    color: @text;
+#volumebluetooth {
+    color: @peach;
     background-color: @crust;
-    margin: 0 0 0 0;
+    margin: 0 15px 0 0px;
     padding: 0 15px 0 15px;
 }
 
+#bluetooth {
+    margin-right: 10px;
+    font-size: 14px; 
+}
+
+#pulseaudio {
+    margin-left: 5px;
+    font-size: 14px; 
+}
+
 #apps {
-    color: @text;
+    color: @blue;
     background-color: @crust;
     margin: 0 0 0 0;
     padding: 0 15px 0 15px;    
@@ -54,6 +126,7 @@ window#waybar {
 
 #custom-appmenu{
     margin-right: 5px;
+    font-size: 16px;
 }
 
 #tray {
@@ -61,31 +134,42 @@ window#waybar {
 }
 
 #network {
-    color: @text; /* color2 */
+    color: @green; /* color2 */
     background-color: @crust; /* background */
     margin: 0 0px 0 0px;
     padding: 0 15px 0 15px; /* top, right, bottom, left */
+    font-size: 14px;
 }
 
 #clock {
-    color: @text; /* color3 */
+    color: @mauve; /* color3 */
     background-color: @crust; /* background */
     margin: 0 0 0 15px;
     padding: 0 15px 0 15px; /* top, right, bottom, left */
+    font-size: 14px;
 }
 
 #powernotify {
     background-color: @crust; /* background */
     margin: 0 0 0 15px;
-    padding: 0 15px 0 15px; /* top, right, bottom, left */   
+    padding: 0 15px 0 15px; /* top, right, bottom, left */  
 }
 
 #custom-powermenu {
     color: @red; /* color3 */
     margin: 0 5px 0 10px;
+    font-size: 16px;
 }
 
 #custom-swaync {
-    color: @text; /* color3 */
+    color: @sky; /* color3 */
     margin: 0 10px 0 5px;
+    font-size: 16px;
+}
+
+tooltip {
+  border-radius: 6px;
+  border: 1px solid @overlay0;
+  background: @base;
+  color: @text;
 }

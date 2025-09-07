@@ -4,18 +4,22 @@
   "margin-top": 10,
   "height": 32,
   "modules-left": ["group/apps"],
-  "modules-center": ["group/hyprworkspaces"],
-  "modules-right": ["pulseaudio", "network", "clock", "group/powernotify"],
-
-  "group/hyprworkspaces": {
-    "modules": ["hyprland/workspaces"]
-  },
+  "modules-center": ["hyprland/workspaces"],
+  "modules-right": ["group/volumebluetooth", "network", "clock", "group/powernotify"],
 
   "group/apps": {
     "orientation": "inherit",
     "modules": [
       "custom/appmenu",
       "tray"
+    ]
+  },
+
+  "group/volumebluetooth": {
+    "orientation": "inherit",
+    "modules": [
+      "bluetooth",
+      "pulseaudio"
     ]
   },
 
@@ -28,7 +32,7 @@
   },
 
   "hyprland/workspaces": {
-    "format": "{icon}",
+    "format": "{name}",
     "on-click": "activate",
     "format-icons": {
       "1": "",
@@ -36,8 +40,8 @@
       "6": ""
     },
     "persistent-workspaces": {
-        "DP-1": [1, 2, 3 ],
-        "DP-2": [6, 7, 8 ]
+        "DP-1": [1, 2, 3, 4, 5 ],
+        "DP-2": [6, 7, 8, 9, 10 ]
     },
 
     "sort-by-number": true
@@ -45,37 +49,51 @@
 
   "tray": {
     "icon-size": 17,
-    "spacing": 10,
+    "spacing": 8
   },
 
   "clock": {
+    "class": "clock-tip",
     "format": "󰥔   {:%H:%M}",
-    "format-alt": "󰥔   {:%a, %d. %b  %I:%M %p}"
+    "format-alt": "󰥔   {:%A %d. %b  %H:%M}",
+    "tooltip": true,
+    "tooltip-format": "<tt><small>{calendar}</small></tt>",
+    "calendar": {
+      "weeks-pos": "left",
+      "format": {
+        "weeks": "<span color='#99ffdd'><b>W{}</b></span>",
+        "today": "<span color='#ff6699'><b><u>{}</u></b></span>"
+      }
+    }
   },
 
   "pulseaudio": {
     "format": "{icon}  {volume}%",
     "format-bluetooth": "󰂱  {volume}%",
-    "format-muted": "󰖁",
+    "format-muted": "󰖁  {volume}%",
     "scroll-step": 1,
     "on-click": "pavucontrol",
+    "on-click-right": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
     "ignored-sinks": ["Easy Effects Sink"],
     "format-icons": {
-      "headphone": "  ",
-      "hands-free": " ",
-      "headset": "󰋎 ",
-      "phone": " ",
-      "portable": " ",
-      "car": "",
       "default": ["󰖀", "󰕾"]
     }
+  },
+
+  "bluetooth": {
+	  "format": "",
+	  "format-disabled": "󰂲",
+	  "format-connected": "󰂳",
+	  "tooltip-format": "No active connections",
+	  "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
+	  "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}"
   },
 
   "network": {
     "interface": "eno1",
     "format": "{ifname}",
-    "format-wifi": "{icon}   {essid}",
-    "format-ethernet": "󰈀   {ifname}",
+    "format-wifi": "{icon}   {signalStrengt}%",
+    "format-ethernet": "󰈀    100%",
     "format-disconnected": "󰤭   disconnected",
     "max-length": 50,
     "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
