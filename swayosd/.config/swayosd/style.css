@@ -1,54 +1,35 @@
 /* ~/.config/swayosd/style.css
-   Catppuccin Mocha theme for SwayOSD (compact bar-only, opaque with sapphire border)
-   Palette: https://github.com/catppuccin/palette */
+   Catppuccin Mocha theme for SwayOSD
+   Palette: https://github.com/catppuccin/palette
+   Layout: [icon] [bar ........] [value] (compact) */
 
-/* ---- Catppuccin Mocha colors ---- */
+/* ---- Catppuccin Mocha ---- */
 @define-color ctp-base      #1e1e2e;
-@define-color ctp-mantle    #181825;
-@define-color ctp-crust     #11111b;
-
-@define-color ctp-text      #cdd6f4;
-@define-color ctp-subtext1  #bac2de;
-@define-color ctp-subtext0  #a6adc8;
-
-@define-color ctp-overlay2  #9399b2;
-@define-color ctp-overlay1  #7f849c;
-@define-color ctp-overlay0  #6c7086;
-
-@define-color ctp-surface2  #585b70;
-@define-color ctp-surface1  #45475a;
 @define-color ctp-surface0  #313244;
-
+@define-color ctp-surface1  #45475a;
+@define-color ctp-mauve     #cba6f7;
 @define-color ctp-blue      #89b4fa;
-@define-color ctp-lavender  #b4befe;
-@define-color ctp-sapphire  #74c7ec;
-@define-color ctp-sky       #89dceb;
-@define-color ctp-teal      #94e2d5;
-@define-color ctp-green     #a6e3a1;
 @define-color ctp-yellow    #f9e2af;
 @define-color ctp-peach     #fab387;
-@define-color ctp-maroon    #eba0ac;
-@define-color ctp-red       #f38ba8;
-@define-color ctp-mauve     #cba6f7;
-@define-color ctp-flamingo  #f2cdcd;
-@define-color ctp-rosewater #f5e0dc;
+@define-color ctp-green     #a6e3a1;
+@define-color ctp-teal      #94e2d5;
+@define-color ctp-overlay1  #7f849c;
+@define-color ctp-sapphire  #74c7ec;
+@define-color ctp-text      #cdd6f4;
 
-/* ---- Compact bar-only layout (opaque, sapphire border) ---- */
+/* ---- Window (tighter) ---- */
 window#osd,
 window.osd {
-  /* Opaque background and sapphire border */
-  background: @ctp-base;                /* no transparency */
-  border: 2px solid @ctp-sapphire;      /* Hyprland-like accent border */
+  background: @ctp-base;             /* opaque */
+  border: 2px solid @ctp-sapphire;   /* match Hyprland border */
   border-radius: 12px;
   box-shadow: none;
-  padding: 6px 10px;                    /* low height */
+  padding: 4px 8px;                  /* tighter padding */
+  min-width: 380px;                  /* narrower overall width */
   color: @ctp-text;
-
-  /* Keep width so bar is always visible */
-  min-width: 360px;
 }
 
-/* Remove internal spacing and borders */
+/* Clean containers */
 window#osd > box,
 window.osd > box,
 row,
@@ -59,46 +40,71 @@ box.osd {
   border: none;
 }
 
-/* Hide icon, title, and numeric value (bar-only look) */
-image#icon,
-label#title,
-label#value {
-  opacity: 0;
-  min-width: 0;
-  min-height: 0;
-  margin: 0;
-  padding: 0;
+/* Left icon (visible) */
+image#icon {
+  -gtk-icon-transform: scale(1.0);
+  margin-right: 8px;                 /* small gap before bar */
+  opacity: 1;
 }
 
-/* Progress bar background (trough) */
+/* Hide title completely */
+label#title {
+  opacity: 0;
+  color: transparent;
+  font-size: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* Middle bar (compact but flexible) */
+scale,
+progressbar {
+  min-width: 240px;                  /* bar width target */
+}
+
+/* Bar background (trough) */
 scale trough,
 progressbar trough {
-  min-height: 8px;          /* lower height */
+  min-height: 8px;                   /* slim bar */
   border-radius: 999px;
   background: @ctp-surface0;
   border: 1px solid @ctp-surface1;
+  margin-right: 6px;                 /* small gap before value */
 }
 
-/* Progress bar fill (accent) */
+/* Bar fill (accent) */
 scale highlight,
 progressbar progress {
   border-radius: 999px;
   background: linear-gradient(90deg, @ctp-mauve, @ctp-blue);
 }
 
-/* Muted state */
+/* Value at the right */
+label#value {
+  opacity: 1;
+  font-weight: 600;
+  font-size: 11pt;
+  color: @ctp-text;
+  margin-left: 4px;
+  margin-right: 0;
+  min-width: 34px;                   /* room for “100” */
+}
+
+/* Muted state dims fill */
 .muted scale highlight,
 .muted progressbar progress {
   background: @ctp-overlay1;
 }
 
-/* Brightness accent */
+/* Brightness accent (if used) */
 .brightness scale highlight,
 .brightness progressbar progress {
   background: linear-gradient(90deg, @ctp-yellow, @ctp-peach);
 }
 
-/* Microphone accent */
+/* Microphone accent (if used) */
 .input scale highlight,
 .input progressbar progress {
   background: linear-gradient(90deg, @ctp-green, @ctp-teal);
