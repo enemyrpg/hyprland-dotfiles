@@ -66,3 +66,10 @@ button:hover {
 #lock:hover {
   background-image: image(url("./icons/lock-hover.png"));
 }
+
+#windows {
+    background-image: image(url("./icons/windows.png"));
+}
+#windows:hover {
+  background-image: image(url("./icons/windows-hover.png"));
+}

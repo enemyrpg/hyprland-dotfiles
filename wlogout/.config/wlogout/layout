@@ -22,3 +22,9 @@
     "text" : "Lock",
     "keybind" : "l"
 }
+{
+    "label" : "windows",
+    "action" : "exec /usr/local/bin/reboot-to-windows.sh",
+    "text" : "Windows",
+    "keybind" : "w"
+}
