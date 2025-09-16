@@ -64,52 +64,10 @@ show_osd() {
     2>/dev/null || true
 }
 
-# --- State ---
-read -r prev_raw prev_mute <<<"$(get_sink_state)"
-prev_disp="$prev_raw"
-prev_ts=0
-
-# --- Background poller (smooth + enforcement) ---
-(
-  while true; do
-    sleep "$(awk -v ms="$POLL_MS" 'BEGIN{print ms/1000}')"
-
-    read -r cur_raw cur_mute <<<"$(get_sink_state)"
-
-    # 1) ENFORCE true 2% in PipeWire (write back whenever off by >= APPLY_EPS)
-    snapped="$(round_vol "$cur_raw")"
-    if awk -v d="$(absdiff "$snapped" "$cur_raw")" -v e="$APPLY_EPS" 'BEGIN{exit !(d>=e)}'; then
-      wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ "$snapped" 2>/dev/null || true
-      cur_raw="$snapped"  # reflect enforced value immediately
-    fi
-
-    # 2) Decide what to display: raw or snapped
-    if [[ "$DISPLAY_MODE" == "snapped" ]]; then
-      disp="$snapped"
-    else
-      disp="$cur_raw"
-    fi
-
-    # 3) Debounce + visible-change threshold for showing OSD
-    now="$(now_ms)"
-    if (( now - prev_ts < DEBOUNCE_MS )); then
-      continue
-    fi
-
-    if [[ "$cur_mute" != "$prev_mute" ]] || \
-       awk -v d="$(absdiff "$disp" "$prev_disp")" -v e="$DISPLAY_EPS" 'BEGIN{exit !(d>=e)}'
-    then
-      prev_mute="$cur_mute"
-      prev_disp="$disp"
-      prev_ts="$now"
-      show_osd "$disp" "$cur_mute"
-    fi
-  done
-) & disown
-
-# --- Event listener (snappier reacts to discrete sink changes) ---
-pactl subscribe | stdbuf -oL grep --line-buffered -i "sink " | while read -r _; do
-  read -r cur_raw cur_mute <<<"$(get_sink_state)"
+# --- Shared helpers for polling + event consumption ---
+handle_sink_update() {
+  local cur_raw="$1" cur_mute="$2"
+  local snapped disp now diff
 
   snapped="$(round_vol "$cur_raw")"
   if awk -v d="$(absdiff "$snapped" "$cur_raw")" -v e="$APPLY_EPS" 'BEGIN{exit !(d>=e)}'; then
@@ -117,19 +75,70 @@ pactl subscribe | stdbuf -oL grep --line-buffered -i "sink " | while read -r _; 
     cur_raw="$snapped"
   fi
 
-  if [[ "$DISPLAY_MODE" == "snapped" ]]; then disp="$snapped"; else disp="$cur_raw"; fi
+  if [[ "$DISPLAY_MODE" == "snapped" ]]; then
+    disp="$snapped"
+  else
+    disp="$cur_raw"
+  fi
 
   now="$(now_ms)"
   if (( now - prev_ts < DEBOUNCE_MS )); then
-    continue
+    return
   fi
 
-  if [[ "$cur_mute" != "$prev_mute" ]] || \
-     awk -v d="$(absdiff "$disp" "$prev_disp")" -v e="$DISPLAY_EPS" 'BEGIN{exit !(d>=e)}'
-  then
+  if [[ "$cur_mute" != "$prev_mute" ]]; then
     prev_mute="$cur_mute"
     prev_disp="$disp"
     prev_ts="$now"
     show_osd "$disp" "$cur_mute"
+    return
+  fi
+
+  diff="$(absdiff "$disp" "$prev_disp")"
+  if awk -v d="$diff" -v e="$DISPLAY_EPS" 'BEGIN{exit !(d>=e)}'; then
+    prev_mute="$cur_mute"
+    prev_disp="$disp"
+    prev_ts="$now"
+    show_osd "$disp" "$cur_mute"
+  fi
+}
+
+start_pactl_subscription() {
+  if [[ -n "${PACTL_FD:-}" ]]; then
+    exec {PACTL_FD}>&-
+  fi
+  exec {PACTL_FD}< <(stdbuf -oL pactl subscribe)
+}
+
+# Ensure background subscription is cleaned up when exiting
+cleanup() {
+  if [[ -n "${PACTL_FD:-}" ]]; then
+    exec {PACTL_FD}>&-
+  fi
+}
+trap cleanup EXIT
+
+# --- State ---
+read -r prev_disp prev_mute <<<"$(get_sink_state)"
+prev_ts=0
+
+POLL_SEC="$(awk -v ms="$POLL_MS" 'BEGIN{printf "%.3f", ms/1000}')"
+start_pactl_subscription
+
+while true; do
+  if read -r -t "$POLL_SEC" -u "$PACTL_FD" line; then
+    [[ -z "$line" ]] && continue
+    if [[ "${line,,}" == *"sink "* ]]; then
+      read -r cur_raw cur_mute <<<"$(get_sink_state)"
+      handle_sink_update "$cur_raw" "$cur_mute"
+    fi
+  else
+    status=$?
+    if (( status == 142 )); then
+      read -r cur_raw cur_mute <<<"$(get_sink_state)"
+      handle_sink_update "$cur_raw" "$cur_mute"
+    else
+      start_pactl_subscription
+    fi
   fi
 done
