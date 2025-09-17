@@ -8,7 +8,6 @@ STEP=0.02          # enforce 2% increments
 POLL_MS=100        # poll every 100 ms for smooth updates
 DISPLAY_EPS=0.02   # need >=2% visible change to show OSD (noise filter)
 APPLY_EPS=0.003    # apply snap if raw differs by >=0.3% (tight for true 2%)
-DEBOUNCE_MS=150    # minimum time between OSD updates (ms)
 DISPLAY_MODE="snapped"  # "snapped" shows exact 2% steps; use "raw" to show actual
 
 # --- Single instance guard (by full path) ---
@@ -67,14 +66,13 @@ show_osd() {
 # --- Shared helpers for polling + event consumption ---
 handle_sink_update() {
   local cur_raw="$1" cur_mute="$2"
-  local snapped disp now diff_to_snap debounced=0 applied_snap=0 diff
+  local snapped disp now diff_to_snap diff
 
   snapped="$(round_vol "$cur_raw")"
   diff_to_snap="$(absdiff "$snapped" "$cur_raw")"
   if awk -v d="$diff_to_snap" -v e="$APPLY_EPS" 'BEGIN{exit !(d>=e)}'; then
     wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ "$snapped" 2>/dev/null || true
     cur_raw="$snapped"
-    applied_snap=1
   fi
 
   if [[ "$DISPLAY_MODE" == "snapped" ]]; then
@@ -84,14 +82,8 @@ handle_sink_update() {
   fi
 
   now="$(now_ms)"
-  if (( now - prev_ts < DEBOUNCE_MS )); then
-    debounced=1
-  fi
 
   if [[ "$cur_mute" != "$prev_mute" ]]; then
-    if (( debounced )); then
-      return
-    fi
     prev_mute="$cur_mute"
     prev_disp="$disp"
     prev_ts="$now"
@@ -100,19 +92,16 @@ handle_sink_update() {
   fi
 
   diff="$(absdiff "$disp" "$prev_disp")"
-  if (( debounced )); then
+  if awk -v d="$diff" -v e="$DISPLAY_EPS" 'BEGIN{exit !(d<e)}'; then
+    prev_mute="$cur_mute"
+    prev_disp="$disp"
     return
   fi
 
-  if awk -v d="$diff" -v e="$DISPLAY_EPS" 'BEGIN{exit !(d>=e)}'; then
-    prev_mute="$cur_mute"
-    prev_disp="$disp"
-    prev_ts="$now"
-    show_osd "$disp" "$cur_mute"
-  elif (( applied_snap )); then
-    prev_mute="$cur_mute"
-    prev_disp="$disp"
-  fi
+  prev_mute="$cur_mute"
+  prev_disp="$disp"
+  prev_ts="$now"
+  show_osd "$disp" "$cur_mute"
 }
 
 start_pactl_subscription() {
