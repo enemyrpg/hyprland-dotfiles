@@ -1,11 +1,56 @@
 {
   "layer": "top",
-  "position": "top",
-  "margin-top": 10,
-  "height": 32,
-  "modules-left": ["group/apps"],
+  "position": "left",
+
+  "modules-left": ["clock", "group/misc"],
   "modules-center": ["hyprland/workspaces"],
-  "modules-right": ["group/volumebluetooth", "network", "clock", "group/powernotify"],
+  "modules-right": ["group/volume", "network",],
+
+  "pulseaudio/slider": {
+    "min": 0,
+    "max": 100,
+    "orientation": "vertical"
+  },
+
+  "group/volume": {
+    "orientation": "vertical",
+    "drawer": {
+      "transition-duration": 500,
+      "transition-top-to-bottom": true
+    },
+    "modules": ["pulseaudio", "pulseaudio/slider"]
+  },
+
+  "group/misc": {
+    "orientation": "inherit",
+    "drawer": {
+      "transition-duration": 500,
+      "children-class": "misc-modules",
+      "transition-top-to-bottom": false
+    },
+    "modules": [
+      "custom/seperator",
+      "custom/notification",
+      "custom/powermenu"
+    ]
+  },
+
+  "custom/seperator": {
+    "format": "_",
+    "tooltip": "false"
+  },
+
+  "hyprland/workspaces": {
+    "format": "{id}",
+    "on-click": "activate",
+    "cursor": "pointer",
+    "persistent-workspaces": {
+        "DP-1": [1, 2, 3, 4, 5 ],
+        "DP-2": [6, 7, 8, 9, 10 ]
+    },
+
+    "sort-by-number": true
+  },
 
   "group/apps": {
     "orientation": "inherit",
@@ -31,22 +76,6 @@
     ]
   },
 
-  "hyprland/workspaces": {
-    "format": "{name}",
-    "on-click": "activate",
-    "format-icons": {
-      "1": "",
-      "2": "",
-      "6": ""
-    },
-    "persistent-workspaces": {
-        "DP-1": [1, 2, 3, 4, 5 ],
-        "DP-2": [6, 7, 8, 9, 10 ]
-    },
-
-    "sort-by-number": true
-  },
-
   "tray": {
     "icon-size": 17,
     "spacing": 8
@@ -54,7 +83,7 @@
 
   "clock": {
     "class": "clock-tip",
-    "format": "󰥔   {:%H:%M}",
+    "format": "{:%H\n%M}",
     "format-alt": "󰥔   {:%A %d. %b  %H:%M}",
     "tooltip": true,
     "tooltip-format": "<tt><small>{calendar}</small></tt>",
@@ -68,15 +97,15 @@
   },
 
   "pulseaudio": {
-    "format": "{icon}  {volume}%",
-    "format-bluetooth": "󰂱  {volume}%",
-    "format-muted": "󰖁  {volume}%",
+    "format": "{icon}",
+    "format-bluetooth": "󰂱",
+    "format-muted": "󰖁",
     "scroll-step": 1,
     "on-click": "pavucontrol",
     "on-click-right": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
     "ignored-sinks": ["Easy Effects Sink"],
     "format-icons": {
-      "default": ["󰖀", "󰕾"]
+      "default": ["󰕿", "󰖀", "󰕾"]
     }
   },
 
@@ -93,9 +122,9 @@
   "network": {
     "interface": ["eno1", ["wlan0"]],
     "format": "{ifname}",
-    "format-wifi": "{icon}   {signalStrength}%",
-    "format-ethernet": "󰈀    100%",
-    "format-disconnected": "󰤭   disconnected",
+    "format-wifi": "{icon}",
+    "format-ethernet": "󰈀",
+    "format-disconnected": "󰤭",
     "max-length": 50,
     "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
     "tooltip": true,
@@ -117,7 +146,7 @@
     "tooltip-format": "Open power menu"
   },
 
-  "custom/swaync": {
+  "custom/notification": {
     "tooltip": false,
     "format": "{icon}",
     "format-icons": {
