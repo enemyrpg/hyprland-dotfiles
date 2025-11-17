@@ -2,18 +2,17 @@
 
 * {
     border: none;
-    border-radius: 50px;
-    font-family: 'Radio Canada Big', sans-serif;
+    font-family: "SF Pro Display", "JetBrainsMono Nerd Font Propo";
     font-weight: bold;
     font-size: 12px;
     min-height: 0;
 }
 
 window#waybar{
-    background: transparent;
+    background: alpha(@crust, 0.8);
     padding-left: 15px;
     padding-right: 15px;
-    border-radius: 50px;
+    border-radius: 0;
     margin-top: 5px;
     margin-bottom: 5px;
     font-weight: normal;
@@ -21,10 +20,9 @@ window#waybar{
 }
 
 #workspaces {
-    background: @crust;
     margin: 0px 0px;
     padding: 8px 5px;
-    border-radius: 50px;
+    border-radius: 8px;
     color: @crust;
 }
 
@@ -32,7 +30,7 @@ window#waybar{
     font-weight: bold;
     padding: 0px 5px;
     margin: 0px 3px;
-    border-radius: 16px;
+    border-radius: 8px;
     color: transparent;
     background: @base;
     transition: all 0.3s ease-in-out;
@@ -42,23 +40,37 @@ window#waybar{
     font-weight: bold;
     padding: 0px 5px;
     margin: 0px 3px;
-    border-radius: 16px;
+    border-radius: 8px;
     color: transparent;
     background: @surface1;
     transition: all 0.3s ease-in-out;     
 }
 
 #workspaces button:not(.empty):not(.active):not(.visible):not(.special):hover {
-    color: @text;
-    background: @surface0;
+    font-weight: bold;
+    background-color: @sapphire;
+    color: @mantle;
+    min-width: 60px;
+    border-radius: 8px;
+    background-size: 400% 400%;
 }
+
+#workspaces button:hover {
+    font-weight: bold;
+    background-color: @sapphire;
+    color: @mantle;
+    min-width: 60px;
+    border-radius: 8px;
+    background-size: 400% 400%;
+}
+
 
 #workspaces button.visible {
     font-weight: bold;
     padding: 0px 5px;
     margin: 0px 3px;
     min-width: 60px;
-    border-radius: 16px;
+    border-radius: 8px;
     color: @mantle;
     background: @overlay0;
     transition: all 0.3s ease-in-out;    
@@ -68,103 +80,85 @@ window#waybar{
     font-weight: bold;
     background-color: @sapphire;
     color: @mantle;
-    border-radius: 16px;
+    border-radius: 8px;
     min-width: 60px;
     background-size: 400% 400%;
     transition: all 0.3s ease-in-out;
 }
 
-#workspaces button.urgent {
+/* #workspaces button.urgent {
     font-weight: bold;
     background-color: @red;
     color: @text;
-    border-radius: 16px;
+    border-radius: 8px;
     background-size: 400% 400%;
     transition: all 0.3s ease-in-out;
-}
-
-#workspaces button:hover {
-    font-weight: bold;
-    background-color: @surface0;
-    color: @text;
-    border-radius: 16px;
-    min-width: 60px;
-    background-size: 400% 400%;
-}
+} */
 
 .modules-left {
-    margin-left: 12px;    
+    margin-left: 15px;    
 }
 
 .modules-right {
-    margin-right: 12px;    
+    margin-right: 15px;    
 }
 
-#volumebluetooth {
-    color: @peach;
-    background-color: @crust;
-    margin: 0 15px 0 0px;
-    padding: 0 15px 0 15px;
-}
-
-#bluetooth {
-    margin-right: 10px;
-    font-size: 14px; 
-}
-
-#pulseaudio {
-    margin-left: 5px;
-    font-size: 14px; 
-}
-
-#apps {
-    color: @blue;
-    background-color: @crust;
-    margin: 0 0 0 0;
-    padding: 0 15px 0 15px;    
+.misc-modules {
+    font-size: 14px;
 }
 
 #custom-appmenu{
-    margin-right: 5px;
-    font-size: 16px;
+    color: @blue;
+    margin: 0 15px 0 0;
+    font-size: 20px;
 }
 
-#tray {
-    margin-left: 10px;
+#pulseaudio-slider {
+    padding: 0;
+    margin: 0 10px 0 0;
+}
+#pulseaudio-slider slider {
+    min-height: 0px;
+    min-width: 0px;
+    opacity: 0;
+    background-image: none;
+    background: @surface0;
+    border: none;
+    box-shadow: none;
+}
+#pulseaudio-slider trough {
+    min-height: 10px;
+    min-width: 100px;
+    border-radius: 5px;
+    background: @overlay0;
+}
+#pulseaudio-slider highlight {
+    min-width: 10px;
+    border-radius: 5px;
+    background: @overlay2;
 }
 
-#network {
-    color: @green; /* color2 */
-    background-color: @crust; /* background */
-    margin: 0 0px 0 0px;
-    padding: 0 15px 0 15px; /* top, right, bottom, left */
-    font-size: 14px;
+#clock.time {
+    color: @mauve;
+    font-family: "Neue Machina";
+    font-weight: 600;
+    font-size: 28px;
+    margin: 5px 0 0 0;
 }
 
-#clock {
-    color: @mauve; /* color3 */
-    background-color: @crust; /* background */
-    margin: 0 0 0 15px;
-    padding: 0 15px 0 15px; /* top, right, bottom, left */
-    font-size: 14px;
-}
-
-#powernotify {
-    background-color: @crust; /* background */
-    margin: 0 0 0 15px;
-    padding: 0 15px 0 15px; /* top, right, bottom, left */  
+#clock.date {
+    margin: 3px 5px 0 0;
+    font-size: 10px;
+    font-family: "Neue Machina";
+    font-weight: normal;
 }
 
 #custom-powermenu {
     color: @red; /* color3 */
-    margin: 0 5px 0 10px;
-    font-size: 16px;
 }
 
 #custom-swaync {
     color: @sky; /* color3 */
-    margin: 0 10px 0 5px;
-    font-size: 16px;
 }
 
 tooltip {
@@ -172,4 +166,33 @@ tooltip {
   border: 1px solid @overlay0;
   background: @base;
   color: @text;
+}
+
+#pulseaudio {
+    color: @yellow;
+}
+
+#network {
+    color: @green;
+}
+
+#bluetooth {
+    color: @peach;
+}
+
+#custom-seperator {
+    margin: 0 5px 0 20px;
+    font-size: 15px;
+}
+
+#custom-powermenu,
+#network,
+#bluetooth,
+#pulseaudio.icon {
+    margin: 0 0 0 20px;
+    font-size: 20px;
+}
+
+#pulseaudio.volume {
+    margin: 0 0 0 5px;
 }
