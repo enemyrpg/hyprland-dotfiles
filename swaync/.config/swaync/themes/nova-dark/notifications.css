@@ -1,24 +1,19 @@
-@define-color text            @foreground;
-@define-color background-alt  @color1;
-@define-color selected        @color3;
-@define-color hover           @color5;
-@define-color urgent          @color2;
+@define-color text           #e7b1b8;
+@define-color background     #0a111e;
+@define-color background-alt #8F2D4E;
+@define-color selected       #89b4fa;
+@define-color hover          #AD4761;
+@define-color urgent         #89b4fa;
+
+/* --- STYLE --- */
 
 * {
-
-  /*background-alt:        @color1;      Buttons background */
-  /*selected:              @color2;      Button selected */
-  /*hover:                 @color5;      Hover button */
-  /*urgent:                @color6;      Urgency critical */
-  /*text-selected:         @background; */
-
   color: @text;
 
   all: unset;
   font-size: 14px;
   font-family: "JetBrains Mono Nerd Font 10";
   transition: 200ms;
-
 }
 
 .notification-row {
@@ -55,7 +50,7 @@
 
 .floating-notifications.background .notification-row .notification-background .notification > *:last-child > * .notification-action {
   border-radius: 8px;
-  background-color: @background-alt ;
+  background-color: @background-alt;
   margin: 6px;
   border: 1px solid transparent;
 }
@@ -108,4 +103,3 @@
 .notification.normal progress {
   background-color: @selected;
 }
-
