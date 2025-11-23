@@ -1,14 +1,11 @@
 /* ----------- 💫 https://github.com/JaKooLit 💫 -------- */
-/* pywal-wlogout */
 
-/* Importing pywal colors */
-
-@import '../../.cache/wal/colors-waybar.css';
+@import 'mocha.css';
 
 window {
     font-family: Fira Code Medium;
     font-size: 16pt;
-    color:  @foreground; /* text */
+    color:  @text; /* text */
     background-color: rgba(24, 27, 32, 0.2);
 
 } 
@@ -33,8 +30,8 @@ button:focus {
 button:hover {
     background-size: 40%;
     box-shadow: 0 0 10px 3px rgba(0,0,0,.4);
-    background-color: @color6;
-    color: @background;
+    background-color: @blue;
+    color: @base;
     transition: all 0.3s cubic-bezier(.55, 0.0, .28, 1.682), box-shadow 0.5s ease-in;
 }
 
