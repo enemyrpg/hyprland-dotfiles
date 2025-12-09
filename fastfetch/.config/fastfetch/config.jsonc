@@ -3,7 +3,7 @@
 		"logo": {
 				"source": "~/.local/share/fastfetch/ascii/cachyos.txt",
 				"padding": {
-						"top": 2,
+						"top": 1,
 						"right": 6,
 						"left": 3
 				}
