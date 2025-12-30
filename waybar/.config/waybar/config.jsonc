@@ -1,34 +1,17 @@
 {
   "layer": "top",
   "position": "top",
-  "height": 32,
+  "height": 34,
   "modules-left": ["custom/appmenu", "tray"],
   "modules-center": ["hyprland/workspaces"],
-  "modules-right": ["group/volume", "bluetooth",  "network", "custom/swaync", "custom/powermenu", "custom/seperator", "clock#date", "clock#time"],
+  "modules-right": ["group/volume", "bluetooth", "network", "custom/swaync", "custom/powermenu", "custom/seperator", "clock#date", "clock#time"],
 
   "hyprland/workspaces": {
     "format": "{name}",
-    "on-click": "activate",
-    "cursor": "pointer",
     "persistent-workspaces": {
-        "DP-1": [1, 2, 3, 4, 5 ],
-        "DP-2": [6, 7, 8, 9, 10 ]
+      "*": 5
     },
-
     "sort-by-number": true
-  },
-
-  "group/misc": {
-    "orientation": "inherit",
-    "drawer": {
-      "transition-duration": 500,
-      "children-class": "misc-modules",
-      "transition-left-to-right": false
-    },
-    "modules": [
-      "custom/seperator",
-      "tray"
-    ]
   },
 
   "pulseaudio/slider": {
