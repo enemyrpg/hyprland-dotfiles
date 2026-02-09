@@ -59,7 +59,7 @@
     "calendar": {
       "weeks-pos": "left",
       "format": {
-        "weeks": "<span color='#99ffdd'><b>W{}</b></span>",
+        "weeks": "<span color='#99ffdd'><b>{:%V}</b></span>",
         "today": "<span color='#ff6699'><b><u>{}</u></b></span>"
       }
     }
