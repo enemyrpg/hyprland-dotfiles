@@ -100,7 +100,7 @@
 	  "tooltip-format": "No active connections",
 	  "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
 	  "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
-    "on-click": "exec blueman-manager"
+    "on-click": "kitty --title bluetooth-float -e bluetui"
   },
 
   "network": {
@@ -113,7 +113,7 @@
     "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
     "tooltip": true,
     "tooltip-format": "{ipaddr}/{cidr}",
-    "on-click": "kitty --title nmtui-float -e nmtui"
+    "on-click": "kitty --title network-float -e impala"
   },
 
   "custom/appmenu": {
